@@ -36,16 +36,46 @@ const album1 = new Album('Operation Ivy', 'Energy')
 const album2 = new Album('Blink 182', 'Dude Ranch')
 const album3 = new Album('New Found Glory', 'Sticks and Stones')
 
+
+console.log(jbox)
 jbox.addAlbum(album1)
 jbox.addAlbum(album2)
 jbox.addAlbum(album3)
 
-album1.play()
-album2.play()
-album2.play()
-album2.play()
-album2.play()
-album2.play()
-album3.play()
+let fmPlayer = document.getElementById("fmPlayer");
+let selectAlbum =document.getElementById("album");
+let showFavorite = document.getElementById("show");
+let pFavoriteAlbum = document.getElementById("favoriteAlbum");
 
-console.log(`Your favorite album is: ${jbox.favoriteAlbum()}`)
+
+for(var i = 0; i < jbox.albums.length; i++) {
+    let stringToAdd = `${jbox.albums[i].artist}: ${jbox.albums[i].title}`
+    console.log(stringToAdd);
+    let el = document.createElement("option");
+    el.textContent = stringToAdd;
+    el.value = stringToAdd;
+    selectAlbum.appendChild(el);
+}
+
+
+function fnPlay(event){
+    event.preventDefault();
+
+    let played = document.getElementById("album");
+    
+    let value = played.value;
+    value = value.slice(0, value.indexOf(":"));
+
+    for(var i = 0; i < jbox.albums.length; i++) {
+        if (jbox.albums[i].artist===value){
+            jbox.albums[i].play();
+        }
+    }
+}
+
+////// EVENT LISTENERS //////
+fmPlayer.addEventListener('submit', function(event){fnPlay(event);});
+
+showFavorite.addEventListener("click", function() {
+    pFavoriteAlbum.innerHTML = jbox.favoriteAlbum();})
+
